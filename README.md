@@ -7,6 +7,4 @@ This repository contains the official PyTorch implementation of **NIRFreqNet**, 
 - **Shallow Feature Extractor (SFE)**: Decouples RGB and NIR streams and generates pixel-wise spectral correlation maps to guide the fusion process.
 - **Frequency-Aware Gated Cross-Fusion Module (GCFM)**: Combines static Laplacian-based high-frequency priors with dynamic convolution to adaptively inject textures while suppressing spectral distortion.
 - **Correlation-Guided Hierarchical Feature Aggregation (CHFA)**: Adaptively merges multi-level features across layers using spectral correlation priors as a stable reference.
-- **Downstream Task Validation**: Specifically optimized for remote sensing applications like Water (NDWI) and Forest (NDVI) extraction.
-
 ---
