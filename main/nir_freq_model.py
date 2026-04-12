@@ -92,7 +92,7 @@ class NIRFreqModel(pl.LightningModule):
         self.ssim_weight = ssim_weight
 
         self.reset_val_metrics()
-        self.epoch_gcfm_stats = []  # 用于缓存每一轮的 Alpha 统计数据
+        self.epoch_gcfm_stats = []
 
     def configure_optimizers(self) -> Tuple[List[torch.optim.Optimizer], List[Dict[str, Any]]]:
         optimizer = torch.optim.AdamW(self.parameters(), lr=self.hparams.lr, weight_decay=1e-4)
@@ -130,29 +130,23 @@ class NIRFreqModel(pl.LightningModule):
             self.log(f"train/{key}", value, prog_bar=(key == "total_loss"), logger=True, on_step=False, on_epoch=True,
                      batch_size=batch_size)
 
-        # 缓存当前 batch 的 stats，准备在 epoch 结束时单独写入文件
         if stats:
             self.epoch_gcfm_stats.append({k: v.item() for k, v in stats.items()})
 
     def on_train_epoch_end(self) -> None:
-        # 单独处理和保存 Alpha 等统计数据到独立文件
         if self.epoch_gcfm_stats:
-            # 计算该 Epoch 的平均值
             avg_stats = {k: np.mean([d[k] for d in self.epoch_gcfm_stats]) for k in self.epoch_gcfm_stats[0].keys()}
             avg_stats['epoch'] = self.current_epoch
 
-            # 找到日志目录
             log_dir = self.trainer.log_dir if self.trainer.log_dir else "."
             csv_path = os.path.join(log_dir, "gcfm_alpha_stats.csv")
 
-            # 保存到单独的 CSV 文件
             df = pd.DataFrame([avg_stats])
             if not os.path.exists(csv_path):
                 df.to_csv(csv_path, index=False)
             else:
                 df.to_csv(csv_path, mode='a', header=False, index=False)
 
-            # 清空缓存供下一个 Epoch 使用
             self.epoch_gcfm_stats = []
 
     def validation_step(self, batch: Dict[str, torch.Tensor], batch_idx: int) -> None:
