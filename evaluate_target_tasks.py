@@ -143,9 +143,6 @@ def generate_task_report(sample, pred_tensor, model_name, target_task, output_di
 
     iou, f1 = calculate_metrics(pred_mask, gt_mask)
 
-    # ==========================================
-    # 1. 绘制并保存 2x3 大图综合报告
-    # ==========================================
     fig, axes = plt.subplots(2, 3, figsize=(15, 10))
     fig.suptitle(f"[{target_task.upper()} Task] Model: {model_name.upper()} | Sample: {sample_name}", fontsize=16,
                  y=0.98)
@@ -186,23 +183,18 @@ def generate_task_report(sample, pred_tensor, model_name, target_task, output_di
     fig.savefig(report_path, dpi=200, bbox_inches='tight')
     plt.close(fig)
 
-    # ==========================================
-    # 2. 单独保存每一张对应的图像
-    # ==========================================
     indiv_dir = os.path.join(output_dir, f"{model_name}_details")
     check_and_make(indiv_dir)
 
     Image.fromarray(gt_rgb).save(os.path.join(indiv_dir, f"{sample_name}_01_GT_RGB.png"))
     Image.fromarray(pred_rgb).save(os.path.join(indiv_dir, f"{sample_name}_02_Pred_RGB.png"))
 
-    # [核心修改处]：单独保存带有色度条的误差热力图
     fig_err, ax_err = plt.subplots(figsize=(6, 6))
     im_err = ax_err.imshow(rgb_diff_scaled, cmap='hot', vmin=0, vmax=1)
     ax_err.axis('off')
     cbar = fig_err.colorbar(im_err, ax=ax_err, fraction=0.046, pad=0.04)
-    # cbar.set_label('Error Scale') # 你可以根据需要解除注释添加标签
+    # cbar.set_label('Error Scale') 
 
-    # 导出时使用 bbox_inches='tight' 防止留白过大
     err_map_path = os.path.join(indiv_dir, f"{sample_name}_03_RGB_ErrorMap.png")
     fig_err.savefig(err_map_path, dpi=300, bbox_inches='tight', transparent=True)
     plt.close(fig_err)
