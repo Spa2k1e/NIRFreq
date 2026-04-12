@@ -26,6 +26,14 @@ The SFE module is designed to extract structural priors from RGB channels and in
 
 ---
 
+## 🗄️ Datasets
+
+The original benchmark datasets (GF-1, IKONOS, and WorldView-2) used for training and evaluating this framework are publicly accessible. You can download the complete dataset from the following repository:
+
+🔗 **[NBU_PansharpRSData](https://github.com/starboot/NBU_PansharpRSData)**
+
+---
+
 ## 📊 Visual Results
 
 Our proposed NIRFreqNet is evaluated on three benchmark satellite datasets (GF-1, IKONOS, and WorldView-2) under both reduced-resolution and full-resolution conditions. It consistently preserves sharper edges and more coherent textures without introducing noticeable spectral distortion.
@@ -91,6 +99,3 @@ To validate the practical utility of the fused images, downstream tasks were con
   <br>
   <i><b>Forest Extraction</b>: Evaluated using NDVI. The explicit RGB-NIR decoupling in our network prevents spectral contamination in critical vegetation bands.</i>
 </p>
-
----
-**Note:** The complete source code and pre-trained models will be released here upon publication.
