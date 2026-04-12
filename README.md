@@ -7,7 +7,7 @@ This repository contains the official PyTorch implementation of **NIRFreqNet**, 
 The overall architecture of NIRFreqNet. It explicitly decouples RGB and NIR streams to establish pixel-wise spectral correlation maps, and utilizes a Frequency-Aware Gated Cross-Fusion Module (GCFM) to integrate static high-frequency priors with dynamic convolutions.
 
 <p align="center">
-  <img src="fig2.jpg" alt="Overview of NIRFreqNet Architecture" width="90%">
+  <img src="Figures/fig2.jpg" alt="Overview of NIRFreqNet Architecture" width="90%">
 </p>
 
 ---
