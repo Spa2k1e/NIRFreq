@@ -32,7 +32,6 @@ def get_args_parser():
                         choices=['nirfreq', 'pannet', 'gppnn', 'pnn', 'lgteun', 'fame-net', 'p2sharpen', 'dpfn',
                                  'faformer', 'premix', 's3fnet', 'ssamrn'], help='Name of the model to train.')
 
-    # 基础参数
     parser.add_argument('--batch_size', type=int, default=4, help="Batch size for training.")
     parser.add_argument('--epochs', type=int, default=400, help="Total number of training epochs.")
     parser.add_argument('--ms_chans', type=int, default=4, help="Number of multispectral channels.")
@@ -46,8 +45,7 @@ def get_args_parser():
     parser.add_argument('--num_workers', type=int, default=4, help="Number of workers for the dataloader.")
     parser.add_argument('--pin_mem', action=argparse.BooleanOptionalAction, default=True,
                         help="Pin memory for faster data transfer.")
-
-    # 模型特有参数
+    
     parser.add_argument('--num_layers', type=int, default=9, help="Number of layers for NIRFreqModel.")
     parser.add_argument('--embed_dim', type=int, default=32, help="Embedding dimension.")
     parser.add_argument('--enable_GCFM', action='store_true', dest='enable_GCFM')
@@ -57,7 +55,6 @@ def get_args_parser():
     parser.add_argument('--enable_corr_map', action='store_true', dest='enable_corr_map', default=True)
     parser.add_argument('--disable_corr_map', action='store_false', dest='enable_corr_map')
 
-    # 新增 alpha 消融控制参数
     parser.add_argument('--fixed_alpha', type=float, default=None,
                         help="Fix alpha to a specific value for ablation studies (e.g., 0.0, 0.5, 1.0). If None, alpha is learnable.")
 
@@ -88,7 +85,6 @@ def main(args):
                            args.pin_mem,
                            )
 
-    # 实例化模型
     if args.model_name == 'nirfreq':
         model = NIRFreqModel(**vars(args))
     elif args.model_name == 'pannet':
